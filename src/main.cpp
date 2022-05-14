@@ -14,16 +14,21 @@ int getTourCost(int N, int tour[], int matrix[])
 
 int main()
 {
-	int N = 4;
-	int matrix[N*N];
+	int N;
+	int * matrix;
 	int tour[N+1];
 
+	matrix = readFile("../instances/pcb442.tsp", &N);
+/*
 	for(int i = 0; i <N; i++) {
 		for(int j = 0; j<N;j++) {
-			matrix[i*N + j] = 0;
+			cout<<matrix[i*N + j]<<" ";
 		}
-	}	
+		cout<<endl;
 
+	}
+*/	
+/*
 	matrix[0] = matrix[N+1] = matrix[2*N + 2] = matrix[3*N+3] =9999;
 	matrix[0*N+1] = matrix[1*N+0] = 2;
 	matrix[0*N+2] = matrix[2*N+0] = 1;
@@ -31,7 +36,7 @@ int main()
 	matrix[1*N+2] = matrix[2*N+1] = 7;
 	matrix[1*N+3] = matrix[3*N+1] = 3;
 	matrix[2*N+3] = matrix[3*N+2] = 4;
-
+*/
 	for(int i = 0; i<N;i++) {
 		tour[i] = i;
 	}
@@ -42,8 +47,7 @@ int main()
 		cout<<tour[i]<<endl;
 	}
 
-	cout<< getTourCost(N, tour, matrix)<<endl;
-	
+	cout<< getTourCost(N, tour, matrix)<<endl;	
 
 
 	return 0;
