@@ -16,6 +16,10 @@ int * readFile(const string filename, int *N)
 		while(value[0] == ' ' || value[0] == ':') {
 			value = value.substr(1);
 		}
+		while(value[value.size()-1] == ' ') {
+			value = value.substr(0, value.size()-1);
+		}
+
 		if(tag == "DIMENSION" || tag=="DIMENSION:" ) {
 			*N = stoi(value);
 		} else if(tag == "EDGE_WEIGHT_TYPE" || tag == "EDGE_WEIGHT_TYPE:") {
@@ -26,7 +30,6 @@ int * readFile(const string filename, int *N)
 	}
 	matrix = (int*) malloc(( (*N)*(*N))*sizeof(int));
 	float pos[*N][2];
-
 	if(type == "EUC_2D") { // Euclidian coordinates
 		float pos[*N][2];
 		int i = 0;

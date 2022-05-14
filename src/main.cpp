@@ -18,8 +18,8 @@ int main()
 	int * matrix;
 	int tour[N+1];
 
-	matrix = readFile("../instances/pcb442.tsp", &N);
-/*
+	matrix = readFile("../instances/fri26.tsp", &N);
+
 	for(int i = 0; i <N; i++) {
 		for(int j = 0; j<N;j++) {
 			cout<<matrix[i*N + j]<<" ";
@@ -27,7 +27,7 @@ int main()
 		cout<<endl;
 
 	}
-*/	
+	
 /*
 	matrix[0] = matrix[N+1] = matrix[2*N + 2] = matrix[3*N+3] =9999;
 	matrix[0*N+1] = matrix[1*N+0] = 2;
