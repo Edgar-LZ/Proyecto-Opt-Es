@@ -13,11 +13,14 @@ int * readFile(const string filename, int *N)
 	while(value.size() > 0) {
 		file>>tag;
 		getline(file, value);
+		if(value.size() == 0) break;
 		while(value[0] == ' ' || value[0] == ':') {
 			value = value.substr(1);
 		}
-		while(value[value.size()-1] == ' ') {
+		int vsize = value.size();
+		while(value[vsize-1] == ' ') {
 			value = value.substr(0, value.size()-1);
+			vsize = value.size();
 		}
 
 		if(tag == "DIMENSION" || tag=="DIMENSION:" ) {
@@ -29,7 +32,6 @@ int * readFile(const string filename, int *N)
 		}
 	}
 	matrix = (int*) malloc(( (*N)*(*N))*sizeof(int));
-	float pos[*N][2];
 	if(type == "EUC_2D") { // Euclidian coordinates
 		float pos[*N][2];
 		int i = 0;

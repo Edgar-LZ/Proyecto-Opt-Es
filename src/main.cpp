@@ -16,9 +16,10 @@ int main()
 {
 	int N;
 	int * matrix;
-	int tour[N+1];
 
 	matrix = readFile("../instances/fri26.tsp", &N);
+
+	int tour[N+1];
 
 	for(int i = 0; i <N; i++) {
 		for(int j = 0; j<N;j++) {
@@ -49,6 +50,6 @@ int main()
 
 	cout<< getTourCost(N, tour, matrix)<<endl;	
 
-
+	free(matrix);
 	return 0;
 }
