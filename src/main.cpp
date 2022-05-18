@@ -1,5 +1,6 @@
 #include "./headers/common.h"
 #include "./headers/functions.h"
+#include "./headers/localsearch.h"
 
 using namespace std;
 int getTourCost(int N, int tour[], int matrix[])
@@ -19,8 +20,8 @@ int main()
 
 	matrix = readFile("../instances/fri26.tsp", &N);
 
-	int tour[N+1];
-
+	int * tour = (int *) malloc((N+1)*sizeof(int));
+/*
 	for(int i = 0; i <N; i++) {
 		for(int j = 0; j<N;j++) {
 			cout<<matrix[i*N + j]<<" ";
@@ -28,7 +29,8 @@ int main()
 		cout<<endl;
 
 	}
-	
+*/	
+
 /*
 	matrix[0] = matrix[N+1] = matrix[2*N + 2] = matrix[3*N+3] =9999;
 	matrix[0*N+1] = matrix[1*N+0] = 2;
@@ -45,11 +47,26 @@ int main()
 	tour[N] = 0;
 
 	for(int i = 0; i<=N; i++) {
-		cout<<tour[i]<<endl;
+		cout<<tour[i]<<" ";
 	}
+	cout<<endl;
 
-	cout<< getTourCost(N, tour, matrix)<<endl;	
+	int cost = getTourCost(N, tour, matrix);	
+	cout<<cost<<endl;
+
+	cout << exchange2(tour,matrix, N, cost)<<endl;
+	for(int i = 0; i<=N; i++) {
+		cout<<tour[i]<<" ";
+	}
+	cout<<endl;
+	cost = getTourCost(N, tour, matrix);	
+	cout<<cost<<endl;
+
+
+
+
 
 	free(matrix);
+	free(tour);
 	return 0;
 }
