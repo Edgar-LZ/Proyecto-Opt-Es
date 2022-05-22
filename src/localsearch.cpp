@@ -31,12 +31,6 @@ int exchange2( int * tour, int *  costs, int N, int current)
 				}
 			}
 		}
-		cout<<current<<endl;
-	for(int i = 0; i<=N; i++) {
-		cout<<tour[i]<<" ";
-	}
-	cout<<endl;
-
 
 	}
 	return current;

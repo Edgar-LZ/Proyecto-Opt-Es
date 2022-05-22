@@ -1,6 +1,7 @@
 #include "./headers/common.h"
 #include "./headers/functions.h"
 #include "./headers/localsearch.h"
+#include "./headers/randomTour.h"
 
 using namespace std;
 int getTourCost(int N, int tour[], int matrix[])
@@ -13,7 +14,7 @@ int getTourCost(int N, int tour[], int matrix[])
 	return cost;
 }
 
-int main()
+int main(int argc,char *argv[])
 {
 	int N;
 	int * matrix;
@@ -21,6 +22,7 @@ int main()
 	matrix = readFile("../instances/fri26.tsp", &N);
 
 	int * tour = (int *) malloc((N+1)*sizeof(int));
+	if(argc > 1) srand(stoi(argv[1]));
 /*
 	for(int i = 0; i <N; i++) {
 		for(int j = 0; j<N;j++) {
@@ -39,13 +41,14 @@ int main()
 	matrix[1*N+2] = matrix[2*N+1] = 7;
 	matrix[1*N+3] = matrix[3*N+1] = 3;
 	matrix[2*N+3] = matrix[3*N+2] = 4;
-*/
+
 	for(int i = 0; i<N;i++) {
 		tour[i] = i;
 	}
 
 	tour[N] = 0;
-
+*/
+	genRandomTour(N, tour);
 	for(int i = 0; i<=N; i++) {
 		cout<<tour[i]<<" ";
 	}
@@ -54,17 +57,13 @@ int main()
 	int cost = getTourCost(N, tour, matrix);	
 	cout<<cost<<endl;
 
-	cout << exchange2(tour,matrix, N, cost)<<endl;
+	cost = exchange2(tour,matrix, N, cost);
 	for(int i = 0; i<=N; i++) {
 		cout<<tour[i]<<" ";
 	}
 	cout<<endl;
-	cost = getTourCost(N, tour, matrix);	
+//	cost = getTourCost(N, tour, matrix);	
 	cout<<cost<<endl;
-
-
-
-
 
 	free(matrix);
 	free(tour);
