@@ -1,18 +1,10 @@
 #include "./headers/common.h"
 #include "./headers/functions.h"
 #include "./headers/localsearch.h"
-#include "./headers/randomTour.h"
+#include "./headers/utils.h"
+#include "./headers/geneticAlgorithm.h"
 
 using namespace std;
-int getTourCost(int N, int tour[], int matrix[])
-{
-	int cost = 0;
-	for(int i = 0; i<N;i++){
-		cost+= matrix[tour[i]*N + tour[i+1]];
-	}
-
-	return cost;
-}
 
 int main(int argc,char *argv[])
 {
@@ -62,8 +54,10 @@ int main(int argc,char *argv[])
 		cout<<tour[i]<<" ";
 	}
 	cout<<endl;
-//	cost = getTourCost(N, tour, matrix);	
+	cost = getTourCost(N, tour, matrix);	
 	cout<<cost<<endl;
+
+	geneticAlg(N, tour, matrix, 4, 4);
 
 	free(matrix);
 	free(tour);
