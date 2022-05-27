@@ -13,7 +13,7 @@ int getTourCost(int N, int tour[], int matrix[])
 void genRandomTour(int N, int * tour)
 {
 	int i;
-	int nodes[N];
+	int nodes[N+1];
 	for(i = 0; i<N; i++) {
 		nodes[i] =i;
 	}
