@@ -4,5 +4,6 @@
 
 void genRandomTour(int N, int * tour);
 int getTourCost(int N, int tour[], int matrix[]);
+int getTourCost(int N, vector<int> tour, int matrix[]);
 #endif
 

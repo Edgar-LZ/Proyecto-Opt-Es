@@ -9,6 +9,16 @@ int getTourCost(int N, int tour[], int matrix[])
 
 	return cost;
 }
+int getTourCost(int N, vector<int> tour, int matrix[])
+{
+	int cost = 0;
+	for(int i = 0; i<N;i++){
+		cost+= matrix[tour[i]*N + tour[i+1]];
+	}
+
+	return cost;
+}
+
 
 void genRandomTour(int N, int * tour)
 {

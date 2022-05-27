@@ -32,8 +32,24 @@ int main(int argc,char *argv[])
 	cout<<endl;
 	cost = getTourCost(N, tour, matrix);	
 	cout<<cost<<endl;
+	genRandomTour(N, tour);
+	for(int i = 0; i<=N; i++) {
+		cout<<tour[i]<<" ";
+	}
+	cout<<endl;
 
-	geneticAlg(N, tour, matrix, 4, 4);
+	cost = getTourCost(N, tour, matrix);	
+	cout<<cost<<endl;
+
+
+	geneticAlg(N, tour, matrix, 500, 100); // size, tour, costs, gens, population
+	for(int i = 0; i<=N; i++) {
+		cout<<tour[i]<<" ";
+	}
+	cout<<endl;
+	cost = getTourCost(N, tour, matrix);	
+	cout<<cost<<endl;
+
 
 	free(matrix);
 	free(tour);

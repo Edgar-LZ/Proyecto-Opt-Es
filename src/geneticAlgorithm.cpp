@@ -120,7 +120,7 @@ void orderedX(int N, int * p1, int * p2, vector <int> &c1, vector<int> &c2 )
 	for(int i = 0; i<counter; i++) {
 		c1[selected[i]] = reorder1[i];
 		c2[selected[i]] = reorder2[i];
-	}
+	} /*
 	cout << "----PARENTS----"<<endl;
 	for(int i = 0; i<=N; i++) {
 		cout << *(p1+i)<< " ";
@@ -134,10 +134,18 @@ void orderedX(int N, int * p1, int * p2, vector <int> &c1, vector<int> &c2 )
 	}cout<<endl;
 	for(int i =0; i<=N; i++) {
 		cout<<c2[i]<<" ";
-	}cout<<endl;
+	}cout<<endl;*/
 
 }
-
+/*
+ *	Mutation operator for the Genetic Algorithm.
+ *	Mutates each element of the array with a probability p.
+ *	If the mutation occurs, a random node is selected and swapped with
+ *	the current node.
+ *	input: N -> size of the solution
+ *		   vector <int> &csol -> vector containing the solution to mutate.
+ *		   float p -> probability of mutation
+ * */
 void swapMutation(int N, vector<int> &csol, float p)
 {
 	int sel, tmp;
@@ -155,16 +163,73 @@ void swapMutation(int N, vector<int> &csol, float p)
 		csol[0] = csol[sel];
 		csol[sel] = tmp;
 		csol[N] = csol[0];
-	}
+	} /*
 	cout << "----MUTATION----"<<endl;
 	for(int i = 0; i<=N; i++) {
 		cout << csol[i]<< " ";
 	}cout<<endl;
 	for(int i =0; i<=N; i++) {
 		cout<<csol[i]<<" ";
-	}cout<<endl;
+	}cout<<endl;*/
 
 }
+bool cmp( vector <int> a, vector<int > b, int * costs) {
+	int N =  a.size() - 1;
+	int ac =  getTourCost(N, a, costs);
+	int bc = getTourCost(N, b, costs);
+	return ac < bc;
+}
+
+
+void chMerge(vector<vector<int>> &arr, int p, int q, int r, int * costs)
+{
+	const int n1 =  q-p+1;
+	const int n2 = r-q;	
+	vector<vector<int>> L, R;
+	
+	for(int i = 0; i< n1; i++) L.push_back(arr[p+i]);
+	for(int j = 0; j<n2; j++) R.push_back(arr[q+1+j]);
+	
+	int i = 0;
+	int j = 0;
+	int k = p;
+	while(k < r+1 && i<n1 && j<n2) {
+		if( cmp(L[i], R[j], costs) ) {
+			arr[k] =  L[i];
+			k++; i++;
+		}
+		else {
+			arr[k] =  R[j];
+			k++; j++;
+		}
+	
+	}
+	while( k<r+1 && i<n1) {
+		arr[k] = L[i];
+		k++;i++;
+	}
+	while(k<r+1 && j<n2) {
+		arr[k] = R[j];
+		k++; j++;
+	}
+}
+
+void chSort(vector<vector<int>> &arr, int p, int r, int * costs)
+{
+	if(p<r) {
+		int q = (p+r) / 2;
+		chSort(arr, p, q, costs);
+		chSort(arr, q+1, r, costs);
+		chMerge(arr, p, q, r, costs);
+	}
+
+}
+
+void childToP(int N, vector<int> child, int * p)
+{
+	for(int i = 0; i<=N; i++) *(p+i) = child[i];
+}
+
 
 /*
  * Genetic Algorithm for the TSP
@@ -181,28 +246,45 @@ int geneticAlg(int N, int * tour, int * costs, int gens, int psize)
 {
 	int p[(N+1)*psize]; // Array to store the population
 	//int ch[(N+1)*psize]; // Array to store the descendance
-	vector<vector<int>> ch(psize, vector<int>(N+1,0));
+	vector<vector<int>> ch(2*psize, vector<int>(N+1,0));
 	
 	for(int i = 0; i< psize; i++) { // Generate initial population at random
 		genRandomTour(N, p+i*(N+1));
 	}
 	//printPopulation(N, p, psize);
 	for(int i =0; i<gens; i++) {
-		int j=0;
-	//	for(int j = 0; j<psize; j+=2) {
+		for(int j = 0; j<2*psize; j+=4) {
 			int p1 = randomTournament(N, p, psize, costs);
 			int p2 = randomTournament(N, p, psize, costs);
 			orderedX(N, p+p1*(N+1), p+p2*(N+1), ch[j], ch[j+1]); // Ordered Crossover
+			orderedX(N, p+p1*(N+1), p+p2*(N+1), ch[j+2], ch[j+3]); // Ordered Crossover
 			swapMutation(N, ch[j], 1.0 / N);
 			swapMutation(N, ch[j+1], 1.0 / N);
-			
-			// TODO: implement mutation
-			// TODO: Sort children from best to worst
-			// TODO: Change worst child for the best solution in the population
-	//	}
+			swapMutation(N, ch[j+2], 1.0 / N);
+			swapMutation(N, ch[j+3], 1.0 / N);
+		}
+		chSort(ch, 0, 2*psize-1, costs);
+		int chbest = getTourCost(N, ch[0], costs);
+		int pworst = getTourCost(N, p+psize-1, costs);
+
+
+		if( i > 0 && chbest > pworst) {
+			for(int k = 1; k<psize; k++) {
+				childToP(N, ch[k], p + k*(N+1) );
+			}
+		} else {
+			for(int k = 0; k<psize; k++) {
+				childToP(N, ch[k], p + k*(N+1) );
+			}
+
+		}
+	/*	chbest = getTourCost(N, ch[0], costs);
+		pworst = getTourCost(N, p+(psize-1)*(N+1), costs);
+		cout << pworst<< " "<< chbest<< endl;*/
+
 	}
+	childToP(N, ch[0], tour);
 
 	return 0;
 
 }
-
