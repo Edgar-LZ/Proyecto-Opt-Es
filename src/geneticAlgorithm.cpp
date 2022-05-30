@@ -138,6 +138,91 @@ void orderedX(int N, int * p1, int * p2, vector <int> &c1, vector<int> &c2 )
 
 }
 /*
+ *	Classical crossover operator using the inversion sequence of a permutation.
+ *	Generates valid paths. For each child, each parent provides displacement
+ *	information of some of the elements.
+ *	input: N -> size of the solution
+ *		   int *p1, *p2 -> pointers to the parent solutions
+ *		   vector<int> &c1, &c2 -> references to child solutions
+ *
+ *	Inversion sequence of 6, 2, 3, 1, 7, 5 is 4, 1, 1, 1, 2, 0, 0
+ *	It tells us for aj the numbers that precede j in the permutation, but are
+ *	greater than j.
+ *
+ * */
+void invX(int N, int * p1, int * p2, vector<int> &c1, vector<int> &c2)
+{
+	vector<int> invP1, invP2, invC1, invC2;
+	int m;
+	int point1, point2, tmp;
+	for(int i = 0; i<N; i++) {
+		invP1.push_back(0);
+		invP2.push_back(0);
+		invC1.push_back(0);
+		invC2.push_back(0);
+		m = 0;
+		while( *(p1+m) != i ) { // Generate inversion sequence for p1
+			if(*(p1+m) > i) {
+				invP1[i]++;
+			}
+			m++;
+		}
+		m=0;
+		while( *(p2+m) != i ) { // Generate inversion sequence for p2
+			if(*(p2+m) > i) {
+				invP2[i]++;
+			}
+			m++;
+		}
+	}
+	point1 = rand() % N;
+	while( (point2 = rand()% N) == point1);
+	tmp = max(point1, point2);
+	point1 = min(point1, point2);
+	point2 =  tmp;
+	
+	int i=0; // Two point crossover operator
+	while( i<point1 ) {
+		invC1[i] = invP1[i];
+		invC2[i] = invP2[i];
+	}
+	while( i<point2 ) {
+		invC1[i] = invP2[i];
+		invC2[i] = invP1[i];
+	}
+	while( i<N ) {
+		invC1[i] = invP1[i];
+		invC2[i] = invP2[i];
+	}
+	// TODO: 
+	//	 Test code 
+	//	 Test validity of generated solutions
+	//	 Implemente possibility to use different number of points for the crossover
+	vector<int> pos(N,0);
+	for(int i = N-2; i>=0; i--) {
+		for(int j = i; i<N; j++) {
+			if(pos[m]>= invC1[i]+1) pos[m]++;
+			pos[i] = invC1[i]+1;
+		}
+	}
+	for(int i = 0; i<N; i++)
+		c1[pos[i]] = i;
+	pos.assign(N,0);
+	for(int i = N-2; i>=0; i--) {
+		for(int j = i; i<N; j++) {
+			if(pos[m]>= invC2[i]+1) pos[m]++;
+			pos[i] = invC2[i]+1;
+		}
+	}
+	for(int i = 0; i<N; i++)
+		c2[pos[i]] = i;
+
+	c1[N] = c1[0];
+	c2[N] = c2[0];
+}
+
+
+/*
  *	Mutation operator for the Genetic Algorithm.
  *	Mutates each element of the array with a probability p.
  *	If the mutation occurs, a random node is selected and swapped with
