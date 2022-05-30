@@ -180,7 +180,15 @@ bool cmp( vector <int> a, vector<int > b, int * costs) {
 	return ac < bc;
 }
 
-
+/*
+ *	Merge function for Merge-Sort Algoritm. Sorts child solutions based o their
+ *	cost. Best solutions end in the begininig of the vector.
+ *	input: vector<vector<int>> &arr -> Reference to vector containinig child solutions
+ *		   int p -> start index
+ *		   int q -> middle index
+ *		   int r -> end index
+ *		   int  * costs -> pointer to array representing the cost matrix
+ * */
 void chMerge(vector<vector<int>> &arr, int p, int q, int r, int * costs)
 {
 	const int n1 =  q-p+1;
@@ -213,7 +221,14 @@ void chMerge(vector<vector<int>> &arr, int p, int q, int r, int * costs)
 		k++; j++;
 	}
 }
-
+/*
+ *	Merge sort algorithm. Sorts child solutions based on their cost. Best solutions
+ *	end in the beginning of the vector.
+ *	input: vector<vector<int>> &arr -> Reference vector containing child solutions
+ *		   int p -> start index
+ *		   int r -> end index
+ *		   int * costs -> pointer to array representing the cost matrix
+ * */
 void chSort(vector<vector<int>> &arr, int p, int r, int * costs)
 {
 	if(p<r) {
