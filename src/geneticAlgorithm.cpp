@@ -168,13 +168,30 @@ void invX(int N, int * p1, int * p2, vector<int> &c1, vector<int> &c2)
 			m++;
 		}
 		m=0;
+
 		while( *(p2+m) != i ) { // Generate inversion sequence for p2
 			if(*(p2+m) > i) {
 				invP2[i]++;
 			}
 			m++;
 		}
-	}
+
+	}/*
+	cout << "----PARENTS----"<<endl;
+	for(int i = 0; i<=N; i++) {
+		cout << *(p1+i)<< " ";
+	}cout<<endl;
+	for(int i =0; i<=N; i++) {
+		cout<<*(p2+i)<<" ";
+	}cout<<endl;
+	cout << "----INVERSE----"<<endl;
+	for(int i = 0; i<N; i++) {
+		cout << invP1[i]<< " ";
+	}cout<<endl;
+	for(int i =0; i<N; i++) {
+		cout<< invP2[i]<<" ";
+	}cout<<endl;
+*/
 	point1 = rand() % N;
 	while( (point2 = rand()% N) == point1);
 	tmp = max(point1, point2);
@@ -185,40 +202,86 @@ void invX(int N, int * p1, int * p2, vector<int> &c1, vector<int> &c2)
 	while( i<point1 ) {
 		invC1[i] = invP1[i];
 		invC2[i] = invP2[i];
+		i++;
 	}
 	while( i<point2 ) {
 		invC1[i] = invP2[i];
 		invC2[i] = invP1[i];
+		i++;
 	}
 	while( i<N ) {
 		invC1[i] = invP1[i];
 		invC2[i] = invP2[i];
+		i++;
 	}
 	// TODO: 
 	//	 Test code 
 	//	 Test validity of generated solutions
 	//	 Implemente possibility to use different number of points for the crossover
-	vector<int> pos(N,0);
-	for(int i = N-2; i>=0; i--) {
-		for(int j = i; i<N; j++) {
+	vector<int> pos(N,-1);
+	/*for(int i = N-2; i>=0; i--) {
+		for(int j = i; j<N; j++) {
 			if(pos[m]>= invC1[i]+1) pos[m]++;
 			pos[i] = invC1[i]+1;
 		}
+	}*/
+	int empt;
+	for(int i = 0; i<N; i++) {
+		empt = 0; // Empty spaces
+		int j = 0;
+		while(empt < invC1[i] +1) {
+			if(pos[j] == -1) empt++ ; // Place it on the invC1[i]th empty space
+			if(empt == invC1[i]+1) {
+				pos[j] = i;
+			}
+			j++;
+		}
 	}
+
 	for(int i = 0; i<N; i++)
 		c1[pos[i]] = i;
-	pos.assign(N,0);
-	for(int i = N-2; i>=0; i--) {
-		for(int j = i; i<N; j++) {
+	pos.assign(N,-1);
+	/*for(int i = N-2; i>=0; i--) {
+		for(int j = i; j<N; j++) {
 			if(pos[m]>= invC2[i]+1) pos[m]++;
 			pos[i] = invC2[i]+1;
 		}
+	}*/
+	for(int i = 0; i<N; i++) {
+		empt = 0; // Empty spaces
+		int j = 0;
+		while(empt <invC2[i] +1) {
+			if(pos[j] == -1) empt++ ; // Place it on the invC1[i]th empty space
+			if(empt == invC2[i]+1) {
+				pos[j] = i;
+			}
+			j++;
+		}
 	}
-	for(int i = 0; i<N; i++)
+
+
+	for(int i = 0; i<N; i++) {
 		c2[pos[i]] = i;
+	}
 
 	c1[N] = c1[0];
 	c2[N] = c2[0];
+	/*
+	cout << "----PARENTS----"<<endl;
+	for(int i = 0; i<=N; i++) {
+		cout << *(p1+i)<< " ";
+	}cout<<endl;
+	for(int i =0; i<=N; i++) {
+		cout<<*(p2+i)<<" ";
+	}cout<<endl;
+	cout << "----CHILDREN----"<<endl;
+	for(int i = 0; i<=N; i++) {
+		cout << c1[i]<< " ";
+	}cout<<endl;
+	for(int i =0; i<=N; i++) {
+		cout<<c2[i]<<" ";
+	}cout<<endl;
+	*/
 }
 
 
@@ -356,8 +419,10 @@ int geneticAlg(int N, int * tour, int * costs, int gens, int psize)
 		for(int j = 0; j<2*psize; j+=4) {
 			int p1 = randomTournament(N, p, psize, costs);
 			int p2 = randomTournament(N, p, psize, costs);
-			orderedX(N, p+p1*(N+1), p+p2*(N+1), ch[j], ch[j+1]); // Ordered Crossover
-			orderedX(N, p+p1*(N+1), p+p2*(N+1), ch[j+2], ch[j+3]); // Ordered Crossover
+			//orderedX(N, p+p1*(N+1), p+p2*(N+1), ch[j], ch[j+1]); // Ordered Crossover
+			//orderedX(N, p+p1*(N+1), p+p2*(N+1), ch[j+2], ch[j+3]); // Ordered Crossover
+			invX(N, p+p1*(N+1), p+p2*(N+1), ch[j], ch[j+1]);
+			invX(N, p+p1*(N+1), p+p2*(N+1), ch[j+2], ch[j+3]);
 			swapMutation(N, ch[j], 1.0 / N);
 			swapMutation(N, ch[j+1], 1.0 / N);
 			swapMutation(N, ch[j+2], 1.0 / N);
