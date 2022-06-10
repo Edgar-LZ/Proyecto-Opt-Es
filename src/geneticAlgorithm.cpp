@@ -422,10 +422,10 @@ int geneticAlg(int N, int * tour, int * costs, int gens, int psize)
 			//orderedX(N, p+p1*(N+1), p+p2*(N+1), ch[j+2], ch[j+3]); // Ordered Crossover
 			invX(N, p+p1*(N+1), p+p2*(N+1), ch[j], ch[j+1]);
 			invX(N, p+p1*(N+1), p+p2*(N+1), ch[j+2], ch[j+3]);
-			swapMutation(N, ch[j], 5.0 / N);
-			swapMutation(N, ch[j+1], 5.0 / N);
-			swapMutation(N, ch[j+2], 5.0 / N);
-			swapMutation(N, ch[j+3], 5.0 / N);
+			swapMutation(N, ch[j], 1.0 / N);
+			swapMutation(N, ch[j+1], 1.0 / N);
+			swapMutation(N, ch[j+2], 1.0 / N);
+			swapMutation(N, ch[j+3], 1.0 / N);
 		}
 		for(int j = 0; j< 2*psize; j++) {
 			int current = getTourCost(N, ch[i], costs);
