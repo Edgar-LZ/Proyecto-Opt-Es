@@ -1,4 +1,6 @@
 #include "./headers/geneticAlgorithm.h"
+#include "./headers/localsearch.h"
+#include "./headers/utils.h"
 /* 
  * For testing: Prints the population of the Genetic Algorithm
  * input: int N -> size of the solution, 
@@ -214,10 +216,6 @@ void invX(int N, int * p1, int * p2, vector<int> &c1, vector<int> &c2)
 		invC2[i] = invP2[i];
 		i++;
 	}
-	// TODO: 
-	//	 Test code 
-	//	 Test validity of generated solutions
-	//	 Implemente possibility to use different number of points for the crossover
 	vector<int> pos(N,-1);
 	/*for(int i = N-2; i>=0; i--) {
 		for(int j = i; j<N; j++) {
@@ -416,6 +414,7 @@ int geneticAlg(int N, int * tour, int * costs, int gens, int psize)
 	}
 	//printPopulation(N, p, psize);
 	for(int i =0; i<gens; i++) {
+		cout<< i<<endl;
 		for(int j = 0; j<2*psize; j+=4) {
 			int p1 = randomTournament(N, p, psize, costs);
 			int p2 = randomTournament(N, p, psize, costs);
@@ -423,17 +422,22 @@ int geneticAlg(int N, int * tour, int * costs, int gens, int psize)
 			//orderedX(N, p+p1*(N+1), p+p2*(N+1), ch[j+2], ch[j+3]); // Ordered Crossover
 			invX(N, p+p1*(N+1), p+p2*(N+1), ch[j], ch[j+1]);
 			invX(N, p+p1*(N+1), p+p2*(N+1), ch[j+2], ch[j+3]);
-			swapMutation(N, ch[j], 1.0 / N);
-			swapMutation(N, ch[j+1], 1.0 / N);
-			swapMutation(N, ch[j+2], 1.0 / N);
-			swapMutation(N, ch[j+3], 1.0 / N);
+			swapMutation(N, ch[j], 5.0 / N);
+			swapMutation(N, ch[j+1], 5.0 / N);
+			swapMutation(N, ch[j+2], 5.0 / N);
+			swapMutation(N, ch[j+3], 5.0 / N);
+		}
+		for(int j = 0; j< 2*psize; j++) {
+			int current = getTourCost(N, ch[i], costs);
+			exchange2( ch[i], costs, N, current);
 		}
 		chSort(ch, 0, 2*psize-1, costs);
 		int chbest = getTourCost(N, ch[0], costs);
-		int pworst = getTourCost(N, p+psize-1, costs);
+		int pworst = getTourCost(N, p+(psize-1)*(N+1), costs);
+		int pbest = getTourCost(N, p, costs);
 
 
-		if( i > 0 && chbest > pworst) {
+		if( i > 0 && chbest > pbest) {
 			for(int k = 1; k<psize; k++) {
 				childToP(N, ch[k], p + k*(N+1) );
 			}
@@ -443,12 +447,14 @@ int geneticAlg(int N, int * tour, int * costs, int gens, int psize)
 			}
 
 		}
-	/*	chbest = getTourCost(N, ch[0], costs);
-		pworst = getTourCost(N, p+(psize-1)*(N+1), costs);
-		cout << pworst<< " "<< chbest<< endl;*/
+
+		//pworst = getTourCost(N, p+(psize-1)*(N+1), costs);
+		cout << pbest<< endl;
 
 	}
-	childToP(N, ch[0], tour);
+	for(int i = 0; i<=N; i++){
+		*(tour +i) = *(p+i);
+	}
 
 	return 0;
 

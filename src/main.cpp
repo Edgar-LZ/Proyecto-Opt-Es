@@ -11,7 +11,7 @@ int main(int argc,char *argv[])
 	int N;
 	int * matrix;
 
-	matrix = readFile("../instances/fri26.tsp", &N);
+	matrix = readFile("../instances/pcb442.tsp", &N);
 
 	int * tour = (int *) malloc((N+1)*sizeof(int));
 	if(argc > 1) srand(stoi(argv[1])); // Seed for random generation
@@ -42,7 +42,7 @@ int main(int argc,char *argv[])
 	cout<<cost<<endl;
 
 
-	geneticAlg(N, tour, matrix, 1, 4); // size, tour, costs, gens, population
+	geneticAlg(N, tour, matrix, 100, 200); // size, tour, costs, gens, population
 	for(int i = 0; i<=N; i++) {
 		cout<<tour[i]<<" ";
 	}
