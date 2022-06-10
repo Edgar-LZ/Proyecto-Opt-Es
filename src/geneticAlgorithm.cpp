@@ -400,12 +400,16 @@ void childToP(int N, vector<int> child, int * p)
  *		  int * costs -> pointer to the array representing the cost matrix
  *		  int gens -> number of generations
  *		  int psize -> size of the population
+ *		  int xtype -> 0 ordered crossover, 1 inverse sequence crossover
+ *		  bool localsearch -> use local search
  *	output: int -> cost of the best solution
  *			stores the best solurion in tour
+ *			
  * */
-int geneticAlg(int N, int * tour, int * costs, int gens, int psize)
+int geneticAlg(int N, int * tour, int * costs, int gens, int psize, int xtype, bool localsearch)
 {
 	int p[(N+1)*psize]; // Array to store the population
+	int pbest;
 	//int ch[(N+1)*psize]; // Array to store the descendance
 	vector<vector<int>> ch(2*psize, vector<int>(N+1,0));
 	
@@ -414,48 +418,53 @@ int geneticAlg(int N, int * tour, int * costs, int gens, int psize)
 	}
 	//printPopulation(N, p, psize);
 	for(int i =0; i<gens; i++) {
-		cout<< i<<endl;
 		for(int j = 0; j<2*psize; j+=4) {
 			int p1 = randomTournament(N, p, psize, costs);
 			int p2 = randomTournament(N, p, psize, costs);
-			//orderedX(N, p+p1*(N+1), p+p2*(N+1), ch[j], ch[j+1]); // Ordered Crossover
-			//orderedX(N, p+p1*(N+1), p+p2*(N+1), ch[j+2], ch[j+3]); // Ordered Crossover
-			invX(N, p+p1*(N+1), p+p2*(N+1), ch[j], ch[j+1]);
-			invX(N, p+p1*(N+1), p+p2*(N+1), ch[j+2], ch[j+3]);
+			if(xtype == 0) {
+				orderedX(N, p+p1*(N+1), p+p2*(N+1), ch[j], ch[j+1]); // Ordered Crossover
+				orderedX(N, p+p1*(N+1), p+p2*(N+1), ch[j+2], ch[j+3]); // Ordered Crossover
+			} else if (xtype == 1) {
+				invX(N, p+p1*(N+1), p+p2*(N+1), ch[j], ch[j+1]);
+				invX(N, p+p1*(N+1), p+p2*(N+1), ch[j+2], ch[j+3]);
+			}
 			swapMutation(N, ch[j], 1.0 / N);
 			swapMutation(N, ch[j+1], 1.0 / N);
 			swapMutation(N, ch[j+2], 1.0 / N);
 			swapMutation(N, ch[j+3], 1.0 / N);
 		}
-		for(int j = 0; j< 2*psize; j++) {
+		for(int j = 0; localsearch && j< 2*psize; j++) {
 			int current = getTourCost(N, ch[i], costs);
 			exchange2( ch[i], costs, N, current);
 		}
 		chSort(ch, 0, 2*psize-1, costs);
 		int chbest = getTourCost(N, ch[0], costs);
-		int pworst = getTourCost(N, p+(psize-1)*(N+1), costs);
-		int pbest = getTourCost(N, p, costs);
-
+		pbest = getTourCost(N, p, costs);
 
 		if( i > 0 && chbest > pbest) {
 			for(int k = 1; k<psize; k++) {
-				childToP(N, ch[k], p + k*(N+1) );
+				childToP(N, ch[k-1], p + k*(N+1) );
 			}
 		} else {
-			for(int k = 0; k<psize; k++) {
+			for(int j = 0; j<=N;j++ ){
+				*(p+(psize-1)*(N+1) + j) = *(p+j);
+			}
+			for(int k = 0; k<psize-1; k++) {
 				childToP(N, ch[k], p + k*(N+1) );
 			}
 
 		}
 
-		//pworst = getTourCost(N, p+(psize-1)*(N+1), costs);
-		cout << pbest<< endl;
+		//pbest = getTourCost(N, p, costs);
+		//cout << pbest<< endl;
 
 	}
 	for(int i = 0; i<=N; i++){
 		*(tour +i) = *(p+i);
 	}
 
-	return 0;
+	getTourCost(N, tour, costs);
+
+	return pbest;
 
 }

@@ -2,6 +2,7 @@
 	#define GA_H
 #include "./common.h"
 #include "./utils.h"
-int geneticAlg(int N, int * tour, int * costs, int gens, int psize);
+int geneticAlg(int N, int * tour, int * costs, int gens,
+	   	int psize, int xtype, bool localsearch);
 
 #endif

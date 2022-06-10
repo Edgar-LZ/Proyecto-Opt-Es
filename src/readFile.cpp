@@ -55,6 +55,16 @@ int * readFile(const string filename, int *N)
 			}
 			file>>matrix[i*(*N)+i];
 		}
+	} else if(type=="EXPLICIT" && format=="UPPER_DIAG_ROW") { // Upper triangular
+		for(int i = 0; i<(*N); i++) {
+			file>>matrix[i*(*N)+i];
+			for(int j = i+1; j<(*N); j++) {
+				file>>matrix[i*(*N) + j];
+				matrix[(*N)*j + i] = matrix[i*(*N)+j];
+			}
+		
+		}
+	
 	}
 	return matrix;
 }

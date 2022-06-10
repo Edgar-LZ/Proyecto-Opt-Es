@@ -10,47 +10,53 @@ int main(int argc,char *argv[])
 {
 	int N;
 	int * matrix;
+	int cost;
+	int * tour;
+	string fileIn, fileOut, method, crossover;
+	int locs;
+	ofstream ofile;
 
-	matrix = readFile("../instances/pcb442.tsp", &N);
 
-	int * tour = (int *) malloc((N+1)*sizeof(int));
-	if(argc > 1) srand(stoi(argv[1])); // Seed for random generation
+	if(argc > 1) {
+		srand(stoi(argv[1])); // Seed for random generation
+		fileIn = argv[2];
+		matrix = readFile(fileIn, &N);
+		tour = (int *) malloc((N+1)*sizeof(int));
+		fileOut = argv[3];
+		ofile.open(fileOut);
+		method =  argv[4];
+		if(method == "genetic") {
+			crossover = argv[5];
+			locs = stoi(argv[6]);
+			if(crossover == "ord") {
+				ofile<<geneticAlg(N, tour, matrix, 100, 200, 0, locs)<<endl;; // size, tour, costs, gens, population
+				for(int i = 0; i<=N; i++) {
+					ofile<<tour[i]+1<<" ";
+				}
 
-	genRandomTour(N, tour);
-	for(int i = 0; i<=N; i++) {
-		cout<<tour[i]<<" ";
+				ofile<<endl;
+			}
+			else if(crossover =="inv") {
+				ofile<< geneticAlg(N, tour, matrix, 100, 200, 1, locs)<<endl; // size, tour, costs, gens, population
+				for(int i = 0; i<=N; i++) {
+					ofile<<tour[i]+1<<" ";
+				}
+				ofile<<endl;
+			}
+		} else if(method == "localsearch") {
+			genRandomTour(N, tour);
+			cost =getTourCost(N, tour, matrix);
+			cost = exchange2(tour,matrix, N, cost);
+			for(int i = 0; i<=N; i++) {
+				ofile<<tour[i]+1<<" ";
+			}
+			ofile<<endl;
+
+			ofile<<cost<<endl;
+		}
+	} else {
+		printf("Argument error.\n");
 	}
-	cout<<endl;
-
-	int cost = getTourCost(N, tour, matrix);	
-	cout<<cost<<endl;
-
-	cost = exchange2(tour,matrix, N, cost);
-	for(int i = 0; i<=N; i++) {
-		cout<<tour[i]<<" ";
-	}
-	cout<<endl;
-	cost = getTourCost(N, tour, matrix);	
-	cout<<cost<<endl;
-	genRandomTour(N, tour);
-	for(int i = 0; i<=N; i++) {
-		cout<<tour[i]<<" ";
-	}
-	cout<<endl;
-
-	cost = getTourCost(N, tour, matrix);	
-	cout<<cost<<endl;
-
-
-	geneticAlg(N, tour, matrix, 100, 200); // size, tour, costs, gens, population
-	for(int i = 0; i<=N; i++) {
-		cout<<tour[i]<<" ";
-	}
-	cout<<endl;
-	cost = getTourCost(N, tour, matrix);	
-	cout<<cost<<endl;
-
-
 	free(matrix);
 	free(tour);
 	return 0;
