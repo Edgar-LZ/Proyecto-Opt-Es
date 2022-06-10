@@ -30,32 +30,18 @@ int main(int argc,char *argv[])
 			locs = stoi(argv[6]);
 			if(crossover == "ord") {
 				ofile<<geneticAlg(N, tour, matrix, 100, 200, 0, locs)<<endl;; // size, tour, costs, gens, population
-				for(int i = 0; i<=N; i++) {
-					ofile<<tour[i]+1<<" ";
-				}
-
-				ofile<<endl;
 			}
 			else if(crossover =="inv") {
 				ofile<< geneticAlg(N, tour, matrix, 100, 200, 1, locs)<<endl; // size, tour, costs, gens, population
-				for(int i = 0; i<=N; i++) {
-					ofile<<tour[i]+1<<" ";
-				}
-				ofile<<endl;
 			}
 		} else if(method == "localsearch") {
 			genRandomTour(N, tour);
 			cost =getTourCost(N, tour, matrix);
-			cost = exchange2(tour,matrix, N, cost);
-			for(int i = 0; i<=N; i++) {
-				ofile<<tour[i]+1<<" ";
-			}
-			ofile<<endl;
-
-			ofile<<cost<<endl;
+			ofile<< exchange2(tour,matrix, N, cost)<<endl;
 		}
 	} else {
 		printf("Argument error.\n");
+		return 1;
 	}
 	free(matrix);
 	free(tour);
