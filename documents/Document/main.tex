@@ -1,0 +1,25 @@
+\documentclass[letterpaper]{article}
+\input{files/package.tex}
+\setmargins{2cm}
+{1cm}
+{17cm}
+{25cm}
+{10pt}
+{1cm}
+{0pt}
+{2cm}
+\input{sections/title_data.tex}
+\begin{document}
+\changefontsizes{12pt}
+\input{sections/title.tex}
+%\input{sections/abstract.tex}
+\input{sections/introduction.tex}
+\input{sections/body.tex}
+\input{sections/results.tex}
+\input{sections/conclusions.tex}
+\bibliographystyle{vancouver}
+% \let\Section\section
+% \def\section*#1{\Section{#1}}
+\nocite{*}
+\bibliography{references}
+\end{document}
