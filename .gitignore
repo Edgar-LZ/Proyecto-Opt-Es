@@ -6,3 +6,5 @@ __pycache__/
 *.log
 *.xopp
 *.out
+TSP_run
+build/*

@@ -19,14 +19,14 @@ int main(int argc,char *argv[])
 
 	if(argc > 1) {
 		srand(stoi(argv[1])); // Seed for random generation
-		fileIn = argv[2];
+		fileIn = argv[2]; // name of the instance
 		matrix = readFile(fileIn, &N);
 		tour = (int *) malloc((N+1)*sizeof(int));
-		fileOut = argv[3];
+		fileOut = argv[3]; // out file
 		ofile.open(fileOut);
-		method =  argv[4];
+		method =  argv[4]; // method 
 		if(method == "genetic") {
-			crossover = argv[5];
+			crossover = argv[5]; 
 			locs = stoi(argv[6]);
 			if(crossover == "ord") {
 				ofile<<geneticAlg(N, tour, matrix, 100, 200, 0, locs)<<endl;; // size, tour, costs, gens, population
