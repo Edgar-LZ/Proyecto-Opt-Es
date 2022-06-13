@@ -1,3 +1,33 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{Davendra}
+Davendra D.
+\newblock Traveling Salesman Problem, Theory and Applications; 2010.
+
+\bibitem{Gutin}
+Gutin G, Punnen A.
+\newblock The Traveling Salesman Problem and Its Variations. 2002 01;12.
+
+\bibitem{8679367}
+Akter S, Nahar N, ShahadatHossain M, Andersson K.
+\newblock A New Crossover Technique to Improve Genetic Algorithm and Its
+  Application to TSP.
+\newblock In: 2019 International Conference on Electrical, Computer and
+  Communication Engineering (ECCE); 2019. p. 1--6.
+
+\bibitem{ucoluk}
+Üçoluk G.
+\newblock Genetic Algorithm Solution of the TSP Avoiding Special Crossover and
+  Mutation. vol.~3; 2002.
+
+\bibitem{Eiben2010-op}
+Eiben AE, Smith JE.
+\newblock Introduction to evolutionary computing.
+\newblock Natural computing series. Berlin, Germany: Springer; 2010.
+
+\bibitem{Rein91}
+Reinelt G.
+\newblock {TSPLIB}--A Traveling Salesman Problem Library.
+\newblock ORSA Journal on Computing. 1991;3(4):376--384.
 
 \end{thebibliography}
