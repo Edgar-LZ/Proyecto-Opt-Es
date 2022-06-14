@@ -21,7 +21,7 @@ Para compilar el proyecto se deben ejecutar los siguientes comandos:
 Una vez hecho esto, se habrá compilado y generado un ejecutable que se encuentra
 en la carpeta raiz bajo el nombre `TSP_run`. Para ejecutar el programa se llama el siguiente comando:
 ```bash
-./TSP_run <semilla> <archivo de entrada> <número de frecuencias> <archivo de salida> <Algoritmo> <Tiempo de ejecución> <Argumentos opcionales del genético>
+./TSP_run <semilla> <archivo de entrada> <archivo de salida> <Algoritmo> <Argumentos opcionales del genético>
 ```
 un ejemplo de ejecución para el Algoritmo Genético sería
 ```bash
